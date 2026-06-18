@@ -186,7 +186,7 @@ func skipBI(l *string, prn PageResourceNames) error {
 			if err != nil {
 				return err
 			}
-			s = s[i+1:]
+			s = s[i+2:]
 			break
 		}
 		if len(s) == 0 {
@@ -199,16 +199,16 @@ func skipBI(l *string, prn PageResourceNames) error {
 				return errBIExpressionCorrupt
 			}
 			token := s[:i]
-			if token == "CS" {
+			if token == "CS" || token == "ColorSpace" {
 				s = s[i:]
 				s, _ = trimLeftSpace(s, false)
 				s = s[1:]
-				i, _ := positionToNextWhitespaceOrChar(s, "/")
+				i, _ = positionToNextWhitespaceOrChar(s, "/")
 				if i < 0 {
 					return errBIExpressionCorrupt
 				}
 				name := s[:i]
-				if types.MemberOf(name, []string{"DeviceGray", "DeviceRGB", "DeviceCMYK", "Indexed", "G", "RGB", "CMYK", "I"}) {
+				if !types.MemberOf(name, []string{"DeviceGray", "DeviceRGB", "DeviceCMYK", "Indexed", "G", "RGB", "CMYK", "I"}) {
 					prn["ColorSpace"][name] = true
 				}
 			}
