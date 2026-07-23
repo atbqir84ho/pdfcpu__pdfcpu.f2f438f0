@@ -277,7 +277,7 @@ func DecodeName(s string) (string, error) {
 	var sb strings.Builder // will be used only if replacements are necessary
 	for i := 0; i < len(s); i++ {
 		c := s[i]
-		if c == 0 && replaced {
+		if c == 0 {
 			return "", errors.New("a name may not contain a null byte")
 		} else if c != '#' {
 			if replaced {
@@ -299,7 +299,7 @@ func DecodeName(s string) (string, error) {
 			return "", err
 		}
 
-		if decoded[0] == '0' {
+		if decoded[0] == 0 {
 			return "", errors.New("a name may not contain a null byte")
 		}
 
@@ -308,7 +308,7 @@ func DecodeName(s string) (string, error) {
 			replaced = true
 		}
 		sb.Write(decoded)
-		i++
+		i += 2
 	}
 	if !replaced {
 		return s, nil
