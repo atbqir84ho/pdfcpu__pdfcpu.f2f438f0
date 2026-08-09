@@ -248,7 +248,7 @@ func nup4AdvancedSideFoldOutputPageNr(inputPageNr int, inputPageCount int, pageN
 		case 2:
 			p = inputPageCount/2 + bookletPageNumber
 		case 3:
-			p = inputPageCount/2 - bookletPageNumber
+			p = inputPageCount/2 - 1 - bookletPageNumber
 		}
 	} else {
 		// back side (portrait)
@@ -258,16 +258,16 @@ func nup4AdvancedSideFoldOutputPageNr(inputPageNr int, inputPageCount int, pageN
 		case 1:
 			p = inputPageCount - 1 - bookletPageNumber
 		case 2:
-			p = inputPageCount/2 + bookletPageNumber
-		case 3:
 			p = inputPageCount/2 - 1 - bookletPageNumber
+		case 3:
+			p = inputPageCount/2 + bookletPageNumber
 		}
 	}
 	pageNr := getPageNumber(pageNumbers, p)
 
 	// Rotate bottom row of each output page by 180 degrees.
 	var rotate bool
-	if inputPageNr%4 > 2 {
+	if inputPageNr%4 >= 2 {
 		rotate = true
 	}
 	return pageNr, rotate
