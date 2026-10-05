@@ -63,20 +63,20 @@ func (f asciiHexDecode) DecodeLength(r io.Reader, maxLen int64) (io.Reader, erro
 		if bb[i] == eodHexDecode {
 			break
 		}
-		if !bytes.ContainsRune([]byte{0x09, 0x0A, 0x0C, 0x0D}, rune(bb[i])) {
+		if !bytes.ContainsRune([]byte{0x09, 0x0A, 0x0C, 0x0D, 0x20}, rune(bb[i])) {
 			p = append(p, bb[i])
 		}
 	}
 
 	// if len == odd add "0"
 	if len(p)%2 == 1 {
-		p = append([]byte{'0'}, p...)
+		p = append(p, '0')
 	}
 
 	if maxLen < 0 {
 		maxLen = int64(hex.DecodedLen(len(p)))
 	}
-	dst := make([]byte, maxLen+1)
+	dst := make([]byte, maxLen)
 
 	if _, err := hex.Decode(dst, p[:maxLen*2]); err != nil {
 		return nil, err
