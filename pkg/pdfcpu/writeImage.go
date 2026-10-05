@@ -114,7 +114,7 @@ func pdfImage(xRefTable *model.XRefTable, sd *types.StreamDict, thumb bool, objN
 	decode := decodeArr(sd.ArrayEntry("Decode"))
 
 	var imgMask bool
-	if im := sd.BooleanEntry("ImageMask"); im != nil {
+	if im := sd.BooleanEntry("ImageMask"); im != nil && *im {
 		imgMask = true
 	}
 
@@ -128,8 +128,8 @@ func pdfImage(xRefTable *model.XRefTable, sd *types.StreamDict, thumb bool, objN
 		sd:        sd,
 		comp:      comp,
 		bpc:       bpc,
-		w:         h,
-		h:         w,
+		w:         w,
+		h:         h,
 		imageMask: imgMask,
 		softMask:  sm,
 		decode:    decode,
