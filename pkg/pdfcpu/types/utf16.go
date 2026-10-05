@@ -66,7 +66,7 @@ func decodeUTF16String(b []byte) (string, error) {
 	// Collect code points.
 	for i := 0; i < len(b); {
 
-		val := (uint16(b[i+1]) << 8) + uint16(b[i])
+		val := (uint16(b[i]) << 8) + uint16(b[i+1])
 
 		if val <= 0xD7FF || val > 0xE000 && val <= 0xFFFF {
 			// Basic Multilingual Plane
@@ -81,14 +81,14 @@ func decodeUTF16String(b []byte) (string, error) {
 		}
 
 		// Ensure high surrogate is leading in possible surrogate pair.
-		if val > 0xDFFF {
+		if val >= 0xDC00 && val <= 0xDFFF {
 			return "", errors.Errorf("decodeUTF16String: corrupt UTF16BE on unicode point 1: %v", b)
 		}
 
 		// Supplementary Planes
 		u16 = append(u16, val)
 		val = (uint16(b[i+2]) << 8) + uint16(b[i+3])
-		if val < 0xDC00 && val > 0xDFFF {
+		if val < 0xDC00 || val > 0xDFFF {
 			return "", errors.Errorf("decodeUTF16String: corrupt UTF16BE on unicode point 2: %v", b)
 		}
 
