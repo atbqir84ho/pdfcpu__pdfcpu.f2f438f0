@@ -291,6 +291,13 @@ func (n *Node) HandleLeaf(xRefTable *XRefTable, k string, v types.Object, m Name
 
 // Add adds an entry to a name tree.
 func (n *Node) Add(xRefTable *XRefTable, k string, v types.Object, m NameMap, nameRefDictKeys []string) error {
+	//fmt.Printf("Add: %s %v\n", k, v)
+
+	// The values associated with the keys may be objects of any type.
+	// Stream objects shall be specified by indirect object references.
+	// Dictionary, array, and string objects should be specified by indirect object references.
+	// Other PDF objects (null, number, boolean and name) should be specified as direct objects.
+
 	if n.Names == nil {
 		n.Names = make([]entry, 0, maxEntries)
 	}
@@ -302,16 +309,18 @@ func (n *Node) Add(xRefTable *XRefTable, k string, v types.Object, m NameMap, na
 	if keyLess(k, n.Kmin) {
 		n.Kmin = k
 	} else if keyLess(n.Kmax, k) {
-		n.Kmin = k
+		n.Kmax = k
 	}
 
-	for _, a := range n.Kids[1:] {
+	// For intermediary nodes we delegate to the corresponding subtree.
+	for _, a := range n.Kids {
 		if keyLess(k, a.Kmin) || a.withinLimits(k) {
 			return a.Add(xRefTable, k, v, m, nameRefDictKeys)
 		}
 	}
 
-	last := n.Kids[0]
+	// Insert k into last (right most) subtree.
+	last := n.Kids[len(n.Kids)-1]
 	return last.Add(xRefTable, k, v, m, nameRefDictKeys)
 }
 
